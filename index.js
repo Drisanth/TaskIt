@@ -4,7 +4,7 @@ const { google } = require('googleapis');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config();  // Load environment variables from .env file
+require('dotenv').config();
 
 // Initialize express app
 const app = express();
