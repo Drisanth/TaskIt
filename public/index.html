@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to TaskIt</title>
+    <!-- Bootstrap 4 for responsive layout -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Google Font for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            background: url("/static/images/bg2.png") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Header section with logo and title */
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 50px;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .header img {
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+            transform: scale(1.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            color: #f5a520;
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: 2px;
+            opacity: 0;
+            animation: fadeInText 1.2s forwards;
+            animation-delay: 0.3s;
+        }
+
+        /* Center Box for Welcome and Google Sign-in Button */
+        .center-box {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 420px;
+            animation: slideUp 1s ease-in-out;
+        }
+
+        .center-box h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #f5a520;
+            margin-bottom: 20px;
+            animation: fadeInText 1.2s forwards;
+        }
+
+        .center-box p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333;
+            opacity: 0;
+            animation: fadeInText 1.5s forwards;
+            animation-delay: 0.3s;
+        }
+
+        .google-signin-btn {
+            background-color: #4285F4; /* Google Blue */
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .google-signin-btn:hover {
+            background-color: #357ae8;
+            transform: translateY(-5px);
+        }
+
+        .google-signin-btn img {
+            width: 20px;
+            margin-right: 12px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInText {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 576px) {
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .google-signin-btn {
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header with Logo and Name at the Top -->
+    <div class="header">
+        <img src="/static/images/logo.png" alt="TaskIt Logo">
+        <h1>TaskIt</h1>
+    </div>
+
+    <!-- Center Box for Welcome and Google Sign-in Button -->
+    <div class="center-box">
+        <h3>Welcome to TaskIt!</h3>
+        <p>Stay organized and get things done with TaskIt. Sign in to start managing your tasks and events.</p>
+        <button class="google-signin-btn" id="googleSignInBtn">
+            <img src="/static/images/google.png" alt="Google Logo"> Sign in with Google
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Google Sign-In button functionality
+        const signInButton = document.getElementById('googleSignInBtn');
+        signInButton.addEventListener('click', () => {
+            window.location.href = '/auth/google';  // Redirect to Google sign-in
+        });
+    </script>
+</body>
+
+</html>

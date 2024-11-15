@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Tasks</title>
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url("/static/images/bg2.png") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .heading {
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgb(245, 165, 32, 0.85);
+            color: white;
+            padding: 0 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        h1, h2 {
+            margin: 20px 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .logout-btn {
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c9302c;
+        }
+
+        #task-form {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: rgb(180, 143, 217);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: rgb(160, 123, 185);
+        }
+
+        #task-list {
+            margin-top: 20px;
+        }
+
+        #tasks {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #tasks li {
+            background-color: #ffffff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Align items in the li */
+        }
+
+        .task-checkbox {
+            margin-right: 10px; /* Space between checkbox and text */
+        }
+
+        /* Styling for the container with both tasks and quote card */
+        .container {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* Styling for the task section */
+        .task-section {
+            width: 75%;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            max-height: calc(100vh - 100px);
+        }
+
+        /* Styling for the quote card */
+        .quote-card {
+            width: 25%;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .quote-text {
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .quote-time {
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+  <div class="heading">
+      <h2><img src="/static/images/logo.png" alt="TaskIt Logo" style="width: 40px; height: 40px; margin-right: 10px;"> TaskIt</h2>
+      <div class="nav-links">
+          <a href="/dashboard.html" class="nav-link">Tasks</a>
+          <a href="/events.html" class="nav-link">Events</a>
+          <a href="/promodoro.html" class="nav-link">Pomodoro</a>
+      </div>
+      <div class="user-info">
+          <img src="/static/images/user.png" alt="User Profile Picture">
+          <span>{{username}}</span>
+          <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+  </div>
+
+  <!-- Container for task form, task list, and quote card -->
+  <div class="container">
+      <!-- Task Section -->
+      <div class="task-section">
+          <div id="task-form">
+              <h2>Create New Task</h2>
+              <form id="task-form">
+                  <label for="task-title">Task Title:</label>
+                  <input type="text" id="task-title" required>
+                  <label for="task-due">Due Date:</label>
+                  <input type="date" id="task-due" required>
+                  <button type="submit">Create Task</button>
+              </form>
+          </div>
+
+          <div id="task-list">
+              <h2>Your Tasks</h2>
+              <ul id="tasks"></ul>
+          </div>
+      </div>
+
+      <!-- Quote Card Section -->
+      <div class="quote-card">
+          <div class="quote-text" id="quote">"Stay positive, work hard, make it happen."</div>
+          <div class="quote-time" id="currentTime"></div>
+      </div>
+  </div>
+
+  <script>
+      document.getElementById('task-form').addEventListener('submit', async (event) => {
+          event.preventDefault();
+          
+          const title = document.getElementById('task-title').value;
+          const due = document.getElementById('task-due').value;
+
+          const response = await fetch('/create-task', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ title, dueDate: due }),
+          });
+
+          if (response.ok) {
+              alert('Task created successfully');
+              loadTasks();
+          } else {
+              alert('Failed to create task');
+          }
+      });
+
+      async function loadTasks() {
+          const response = await fetch('/tasks');
+          if (response.ok) {
+              const tasks = await response.json();
+              const tasksList = document.getElementById('tasks');
+              tasksList.innerHTML = '';
+              tasks.forEach(task => {
+                  const li = document.createElement('li');
+                  const dueDate = new Date(task.due).toLocaleDateString(); // Display only the date
+                  li.textContent = `${task.title} (Due: ${dueDate})`;
+                  tasksList.appendChild(li);
+              });
+          }
+      }
+
+      // Load tasks when the page loads
+      loadTasks();
+
+      // Update the current time every second
+      setInterval(() => {
+          const now = new Date();
+          document.getElementById('currentTime').innerText = now.toLocaleString();
+      }, 1000);
+
+      // Logout function (example)
+      function logout() {
+          alert("Logged out successfully!");
+      }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcoming Events</title>
+    <!-- Bootstrap 4 and custom CSS for styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Styling for various sections */
+        body {
+            background: url("/static/images/bg2.png") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .heading {
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgb(245, 165, 32, 0.85);
+            color: white;
+            padding: 0 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        h2 img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .logout-btn {
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c9302c;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+            background-color: rgba(255, 255, 255, 0);
+            overflow: hidden;
+        }
+
+        .white-card {
+            width: 75%;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            max-height: calc(100vh - 100px);
+        }
+
+        .quote-card {
+            width: 25%;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .quote-text {
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .quote-time {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .event-list {
+            margin-top: 20px;
+        }
+
+        .event-card {
+            background-color: #ffffff;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-card h5 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .event-card p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .event-card span {
+            font-weight: bold;
+            color: #f5a520;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: rgb(180, 143, 217);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: rgb(160, 123, 185);
+        }
+
+        .add-event-btn {
+            margin-top: 20px;
+            background-color: #ff0000;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .add-event-btn a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .add-event-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <div class="heading">
+        <h2><img src="/static/images/logo.png" alt="TaskIt Logo"> TaskIt</h2>
+        <div class="nav-links">
+            <a href="/dashboard.html" class="nav-link">Tasks</a>
+            <a href="/events.html" class="nav-link">Events</a>
+            <a href="/promodoro.html" class="nav-link">Pomodoro</a>
+        </div>
+        <div class="user-info">
+            <img src="/static/images/user.png" alt="User Profile Picture">
+            <span>{{username}}</span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <!-- Event Listing and Quote Card -->
+    <div class="container">
+        <div class="white-card">
+            <h3>Your Upcoming Events</h3>
+            <div id="events-list" class="event-list"></div> <!-- Placeholder for events -->
+        </div>
+
+        <!-- Quote Card -->
+        <div class="quote-card">
+            <div class="quote-text" id="quote">"Stay positive, work hard, make it happen."</div>
+            <div class="quote-time" id="currentTime"></div>
+            <!-- Add Event Button -->
+            <div class="add-event-btn">
+                <a href="add_events.html">Add Event</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Function to fetch and display events
+        async function loadEvents() {
+            try {
+                const response = await fetch('/events');
+                if (!response.ok) {
+                    throw new Error('Error fetching events');
+                }
+                const events = await response.json();
+
+                const eventsListDiv = document.getElementById('events-list');
+                if (events.length === 0) {
+                    eventsListDiv.innerHTML = '<p>No upcoming events.</p>';
+                } else {
+                    events.forEach(event => {
+                        const eventCard = document.createElement('div');
+                        eventCard.classList.add('event-card');
+
+                        const startTime = new Date(event.start.dateTime || event.start.date).toLocaleString();
+                        eventCard.innerHTML = ` 
+                            <h5>Event Title: <span>${event.summary}</span></h5>
+                            <p><strong>Location:</strong> ${event.location || 'No location specified.'}</p>
+                            <p><strong>Description:</strong> ${event.description || 'No description available.'}</p>
+                            <p><strong>Start Time:</strong> ${startTime}</p>
+                            <button>Join Event</button>
+                        `;
+                        eventsListDiv.appendChild(eventCard);
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('events-list').innerHTML = '<p>Failed to load events.</p>';
+            }
+        }
+
+        // Load events when the page is ready
+        window.onload = loadEvents;
+
+        // Update the current time every second
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('currentTime').innerText = now.toLocaleString();
+        }, 1000);
+
+        // Logout function (example)
+        function logout() {
+            // Logic to handle user logout goes here.
+            alert("Logged out successfully!");
+        }
+    </script>
+</body>
+
+</html>
