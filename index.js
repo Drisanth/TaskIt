@@ -4,7 +4,7 @@ const { google } = require('googleapis');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config();
+require('dotenv').config(); 
 
 // Initialize express app
 const app = express();
@@ -22,7 +22,7 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_REDIRECT_URI      // Redirect URI from environment variable
 );
 
-// Google Calendar API setup
+// Google Calendar API setu
 const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
 
 // Google Tasks API setup
