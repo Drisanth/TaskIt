@@ -1,10 +1,12 @@
+// Import required modules
 const express = require('express');
 const { google } = require('googleapis');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config(); 
+require('dotenv').config();  // Load environment variables from .env file
 
+// Initialize express app
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
@@ -13,11 +15,11 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/static', express.static(path.join(__dirname, 'static'))); // Serve static folder for images, CSS, JS, etc.
 
-// Google OAuth2 setup
+// Google OAuth2 setup using environment variables
 const oauth2Client = new google.auth.OAuth2(
-  'YOUR_CLIENT_ID', // Client ID
-  'YOUR_CLIENT_SECRET', // Client Secret
-  'http://localhost:3000/auth/google/callback' // Redirect URI
+  process.env.GOOGLE_CLIENT_ID,        // Client ID from environment variable
+  process.env.GOOGLE_CLIENT_SECRET,    // Client Secret from environment variable
+  process.env.GOOGLE_REDIRECT_URI      // Redirect URI from environment variable
 );
 
 // Google Calendar API setup
@@ -188,6 +190,7 @@ app.get('/events.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'events.html'));
 });
 
+// Start the server
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
