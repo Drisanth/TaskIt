@@ -47,7 +47,7 @@ app.get('/auth/google/callback', async (req, res) => {
   try {
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
-    res.redirect('/dashboard');
+    res.redirect('/dashboard.html');
   } catch (err) {
     console.error('Error during Google authentication:', err);
     res.status(500).send('Authentication failed');
@@ -55,7 +55,7 @@ app.get('/auth/google/callback', async (req, res) => {
 });
 
 // Route: Serve dashboard page after successful login
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
 
